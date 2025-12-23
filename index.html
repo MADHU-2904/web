@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURELIA | Fine Jewelry & Diamonds</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #c5a059;
+            --dark: #1a1a1a;
+            --light-gold: #f4ece1;
+            --white: #ffffff;
+            --serif: 'Playfair Display', serif;
+            --sans: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--white);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--serif);
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            margin: 0 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--gold); }
+
+        .cart-trigger {
+            cursor: pointer;
+            background: var(--dark);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-family: var(--serif);
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* --- Product Section --- */
+        .section-title {
+            text-align: center;
+            margin: 50px 0;
+            font-family: var(--serif);
+            font-size: 2.5rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 0 8%;
+            margin-bottom: 80px;
+        }
+
+        .item-card {
+            text-align: center;
+            transition: 0.4s;
+            position: relative;
+        }
+
+        .img-container {
+            background: #f9f9f9;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .item-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .item-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .item-card h3 {
+            font-family: var(--serif);
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .price {
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .buy-btn {
+            border: 1px solid var(--dark);
+            background: none;
+            padding: 10px 25px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .buy-btn:hover {
+            background: var(--dark);
+            color: white;
+        }
+
+        /* --- Sidebar Cart --- */
+        #cart-sidebar {
+            position: fixed;
+            right: -100%;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background: white;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            z-index: 2000;
+            transition: 0.5s ease;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #cart-sidebar.open { right: 0; }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cart-items-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; }
+
+        .checkout-area {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .total-price {
+            font-size: 1.4rem;
+            font-family: var(--serif);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #cart-sidebar { width: 100%; }
+            .hero-content h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">AURELIA</div>
+        <nav>
+            <a href="#">Rings</a>
+            <a href="#">Necklaces</a>
+            <a href="#">Bracelets</a>
+        </nav>
+        <div class="cart-trigger" onclick="toggleCart()">
+            CART (<span id="count">0</span>)
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p style="letter-spacing: 5px; text-transform: uppercase;">The Artisan Collection</p>
+            <h1>Eternal Elegance</h1>
+            <button class="buy-btn" style="color: white; border-color: white;">Explore Collection</button>
+        </div>
+    </section>
+
+    <h2 class="section-title">Shop Our Favorites</h2>
+    <div class="product-grid" id="product-display">
+        </div>
+
+    <div id="cart-sidebar">
+        <div class="cart-header">
+            <h2 style="font-family: var(--serif);">Your Bag</h2>
+            <span style="cursor: pointer;" onclick="toggleCart()">CLOSE</span>
+        </div>
+        <div class="cart-items-list" id="cart-list">
+            </div>
+        <div class="checkout-area">
+            <div class="total-price">
+                <span>Total</span>
+                <span id="total-amount">$0.00</span>
+            </div>
+            <button class="btn-gold" onclick="alert('Proceeding to Secure Checkout...')">CHECKOUT</button>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Diamond Solitaire Ring", price: 2400.00, img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=500" },
+            { id: 2, name: "Gold Chain Necklace", price: 850.00, img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500" },
+            { id: 3, name: "Sapphire Drop Earrings", price: 1200.00, img: "https://images.unsplash.com/photo-1535633302703-b0703af29318?w=500" },
+            { id: 4, name: "Classic Tennis Bracelet", price: 3100.00, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500" },
+            { id: 5, name: "Emerald Cut Pendant", price: 950.00, img: "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=500" },
+            { id: 6, name: "Rose Gold Wedding Band", price: 600.00, img: "https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=500" }
+        ];
+
+        let cart = [];
+
+        // Load Products
+        function loadProducts() {
+            const display = document.getElementById('product-display');
+            display.innerHTML = products.map(p => `
+                <div class="item-card">
+                    <div class="img-container">
+                        <img src="${p.img}" alt="${p.name}">
+                    </div>
+                    <h3>${p.name}</h3>
+                    <div class="price">$${p.price.toLocaleString()}</div>
+                    <button class="buy-btn" onclick="addToCart(${p.id})">Add to Bag</button>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const item = products.find(p => p.id === id);
+            cart.push(item);
+            updateCartUI();
+            if(!document.getElementById('cart-sidebar').classList.contains('open')) {
+                toggleCart();
+            }
+        }
+
+        function updateCartUI() {
+            document.getElementById('count').innerText = cart.length;
+            const cartList = document.getElementById('cart-list');
+            cartList.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <img src="${item.img}">
+                    <div>
+                        <div style="font-weight: 600;">${item.name}</div>
+                        <div style="color: var(--gold);">$${item.price.toLocaleString()}</div>
+                        <small style="cursor:pointer; color: red;" onclick="removeItem(${index})">Remove</small>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('total-amount').innerText = `$${total.toLocaleString()}`;
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('open');
+        }
+
+        loadProducts();
+    </script>
+</body>
+</html>
